@@ -1,24 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
-//define id
+// define id
 var id = 0
 
-//create a list of UserData
-var todos = make([]userData, 0)
+// user option
+var userOption string
 
-//make a userData struct
-type userData struct {
+// create a list of UserData
+var todos = make([]todoData, 0)
+
+// make a userData struct
+type todoData struct {
 	id   int
-	data string
+	todo string
 }
 
 func main() {
 	for {
 		//greet user
 		fmt.Printf("Welcome to the Todo System\n")
-		fmt.Printf("Please choose an option. \n")
+		fmt.Printf("Please choose an option below to proceed. \n")
+
+		fmt.Println("###################################")
 
 		//display option to choose from
 		fmt.Printf("1: Add a new Todo\n")
@@ -28,38 +38,55 @@ func main() {
 		fmt.Printf("5: Remove a todo \n")
 		fmt.Printf("6: Quit the program \n")
 
-		//define user input data type
-		var userInput string
+		fmt.Println("###################################")
 
-		//get user's input
-		fmt.Println("Enter your option: ")
-		fmt.Scan(&userInput)
+		//get option from user
+		getOption()
 
-		//check input validity
-		if userInput > "6" || userInput <= "0" {
-			println("You entered a wrong option value. Pick option 1-6 as stated above.")
-			continue
+		processOption()
+	}
+}
+
+func getOption() {
+
+	reader := bufio.NewReader(os.Stdin)
+	//Ask user to enter his/her option
+	fmt.Printf("Enter a an option:\n")
+	option, _ := reader.ReadString('\n')
+
+	//remove delimiter from string
+	userOption = strings.Trim(option, "\r\n")
+
+}
+
+func processOption() {
+	switch userOption {
+	case "1":
+		var todo string
+
+		reader := bufio.NewReader(os.Stdin)
+		//Ask user to enter his/her option
+		fmt.Printf("Enter a todo:\n")
+		data, _ := reader.ReadString('\n')
+
+		//remove delimiter from string
+		todo = strings.Trim(data, "\r\n")
+
+		//generate new ID
+		id += 1
+
+		//add data to struct
+		var todoData = todoData{
+			id:   id,
+			todo: todo,
 		}
 
-		switch userInput {
-		case "1":
-			var data string
+		//add todoData struct to todos list
+		todos = append(todos, todoData)
 
-			fmt.Printf("Enter a todo:\n")
-			//get user's todo
-			fmt.Scan(&data)
+		fmt.Println(todos)
 
-			//increment value of ID
-			id += 1
-
-			var userData = userData{
-				id:   id,
-				data: data,
-			}
-
-			//add userData to todos list
-			todos = append(todos, userData)
-			fmt.Printf("List of todos %v\n", todos)
-		}
+	default:
+		fmt.Println("You have choose the wrong option")
 	}
 }

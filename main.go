@@ -14,12 +14,12 @@ var id = 0
 var userOption string
 
 // create a list of UserData
-var todos = make([]todoData, 0)
+var todos = make([]taskData, 0)
 
 // make a userData struct
-type todoData struct {
+type taskData struct {
 	id   int
-	todo string
+	task string
 }
 
 func main() {
@@ -34,7 +34,7 @@ func main() {
 		fmt.Printf("1: Add a new Todo\n")
 		fmt.Printf("2: View all Todos \n")
 		fmt.Printf("3: Edit a Todo \n")
-		fmt.Printf("4: Mark a todo as incomplete \n")
+		fmt.Printf("4: Mark a todo as complete \n")
 		fmt.Printf("5: Remove a todo \n")
 		fmt.Printf("6: Quit the program \n")
 
@@ -62,31 +62,37 @@ func getOption() {
 func processOption() {
 	switch userOption {
 	case "1":
-		var todo string
+		var task string
 
 		reader := bufio.NewReader(os.Stdin)
 		//Ask user to enter his/her option
-		fmt.Printf("Enter a todo:\n")
+		fmt.Printf("Enter Task:\n")
 		data, _ := reader.ReadString('\n')
 
 		//remove delimiter from string
-		todo = strings.Trim(data, "\r\n")
+		task = strings.Trim(data, "\r\n")
 
 		//generate new ID
 		id += 1
 
 		//add data to struct
-		var todoData = todoData{
+		var taskData = taskData{
 			id:   id,
-			todo: todo,
+			task: task,
 		}
 
 		//add todoData struct to todos list
-		todos = append(todos, todoData)
+		todos = append(todos, taskData)
 
-		fmt.Println(todos)
+		fmt.Print("Your Task  has successfully been added to list.\n \n")
 
+	case "2":
+		//loop through the todos list
+		for _, todo := range todos {
+			//get task
+			fmt.Printf("%v \n\n", todo.task)
+		}
 	default:
-		fmt.Println("You have choose the wrong option")
+		fmt.Printf("You have choose the wrong option.\n\n")
 	}
 }

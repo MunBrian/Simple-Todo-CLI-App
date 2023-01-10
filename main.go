@@ -14,6 +14,9 @@ var id = 0
 // user option
 var userOption string
 
+// message
+var message string
+
 // create a list of UserData
 var todos = make([]taskData, 0)
 
@@ -50,13 +53,11 @@ func main() {
 
 func getOption() {
 
-	reader := bufio.NewReader(os.Stdin)
-	//Ask user to enter his/her option
-	fmt.Printf("Enter a an option: \n")
-	option, _ := reader.ReadString('\n')
+	//pass paremeter message to readUserInput
+	userInput := readUserInput("Enter an option: \n")
 
-	//remove delimiter from string
-	userOption = strings.Trim(option, "\r\n")
+	//get returned value and assign to userOption
+	userOption = userInput
 
 }
 
@@ -64,15 +65,9 @@ func processOption() {
 	switch userOption {
 	//add task
 	case "1":
-		var task string
 
-		reader := bufio.NewReader(os.Stdin)
-		//Ask user to enter his/her option
-		fmt.Printf("Enter Task:\n")
-		data, _ := reader.ReadString('\n')
-
-		//remove delimiter from string
-		task = strings.Trim(data, "\r\n")
+		//get userinput and assign to task
+		task := readUserInput("Enter Task: \n")
 
 		//generate new ID
 		id += 1
@@ -86,25 +81,26 @@ func processOption() {
 		//add todoData struct to todos list
 		todos = append(todos, taskData)
 
-		fmt.Print("Your Task  has successfully been added to list.\n \n")
+		fmt.Printf("Your Task  has successfully been added to list.\n \n")
 
 		//view all todos
 	case "2":
-		//loop through the todos list
-		for _, todo := range todos {
-			//get task
-			fmt.Printf("%v: %v \n\n", todo.id, todo.task)
+
+		if len(todos) == 0 {
+			fmt.Printf("No available tasks. Please select option 1 to add. \n \n")
+		} else {
+			//loop through the todos list
+			for _, todo := range todos {
+				//get task
+				fmt.Printf("%v: %v \n\n", todo.id, todo.task)
+			}
 		}
 
 		//edit task
 	case "3":
 		var taskId string
-		reader := bufio.NewReader(os.Stdin)
-		//Ask user to enter his/her option
-		fmt.Printf("Enter Task ID: \n")
-		data, _ := reader.ReadString('\n')
 
-		taskId = strings.Trim(data, "\n, \r")
+		taskId = readUserInput("Enter Task ID: \n")
 
 		//loop throug each todo
 		for index, todo := range todos {
@@ -112,14 +108,8 @@ func processOption() {
 			if strconv.Itoa(todo.id) == taskId {
 				fmt.Printf("%v \n", todo.task)
 
-				var newTask string
-				reader := bufio.NewReader(os.Stdin)
-				//Ask user to edit previous task
-				fmt.Printf("Edit task: \n")
-				data, _ := reader.ReadString('\n')
-
-				//remove delimiters
-				newTask = strings.Trim(data, "\n,\r")
+				//get userinput value and assign to newTask
+				newTask := readUserInput("Edit task: \n")
 
 				//use index from slice to edit task in struct
 				todos[index].task = newTask
@@ -127,75 +117,52 @@ func processOption() {
 				//display message to user
 				fmt.Println("You successfully updated the task.")
 
-			} else {
-				fmt.Printf("No task with Id of %v. Try Again \n\n", taskId)
 			}
 		}
 
+		//make task as complete
 	case "4":
-		var taskId string
-		reader := bufio.NewReader(os.Stdin)
-		//Ask user to enter his/her option
-		fmt.Printf("Enter Taskid: \n")
-		data, _ := reader.ReadString('\n')
 
-		taskId = strings.Trim(data, "\n, \r")
+		//get value of userInput and assign to taskId
+		taskId := readUserInput("Enter Taskid: \n")
 
 		for index, todo := range todos {
 			//convert todo.id(int) to string
 			if strconv.Itoa(todo.id) == taskId {
 
-				reader := bufio.NewReader(os.Stdin)
+				//save formatted output to message var
+				message = fmt.Sprintf("Do you want to mark %v as completed? (y/n)\n", todo.task)
 
-				//Ask user to confirm to mark task as completed
-				fmt.Printf("Do you want to mark %v as completed? (y/n)\n", todo.task)
+				//get userinput value
+				userInput := readUserInput(message)
 
-				data, _ := reader.ReadString('\n')
-
-				answer := strings.Trim(data, "\n, \r")
-
-				if answer == "y" {
-					//use sprintF to save formated output to completed Task
+				if userInput == "y" {
+					//use sprintf to save formated output to completed Task
 					//strikethrough task to make as completed
 					completedTask := fmt.Sprintf("\033[9m%s\033[0m", todo.task)
 					//use index from slice to edit task in struct
 					todos[index].task = completedTask
 
 					fmt.Printf("Successfully marked task as completed \n\n")
-				} else {
-					continue
 				}
 
-			} else {
-				fmt.Printf("No task with Id of %v. Try Again \n\n", taskId)
 			}
+
 		}
 
 		//remove a todo
 	case "5":
 
-		var taskId string
-
-		//ask user the task id he/she wants to remove
-		reader := bufio.NewReader(os.Stdin)
-
-		fmt.Printf("Enter Taskid: \n")
-
-		data, _ := reader.ReadString('\n')
-
-		taskId = strings.Trim(data, "\n, \r")
+		taskId := readUserInput("Enter Taskid: \n")
 
 		for index, todo := range todos {
 			if strconv.Itoa(todo.id) == taskId {
 				//send a confirm message to remove todo task
+				//save formatted output to message var
+				message = fmt.Sprintf("Are you sure you want to delete %v from todos task (y/n) \n", todo.task)
 
-				reader := bufio.NewReader(os.Stdin)
-
-				fmt.Printf("Are you sure you want to delete %v from todos task (y/n) \n", todo.task)
-
-				data, _ := reader.ReadString('\n')
-
-				userInput := strings.Trim(data, "\n\r")
+				//get userinput value
+				userInput := readUserInput(message)
 
 				if userInput == "y" {
 					//using index remove task with same id as that entered by user
@@ -204,24 +171,16 @@ func processOption() {
 
 					//send message to user
 					fmt.Printf("You successfully removed task. \n\n")
-				} else {
-					continue
 				}
-
-			} else {
-				fmt.Printf("No task with Id of %v. Try Again \n\n", taskId)
 			}
+
 		}
+
 		//quit the program
 	case "6":
-		reader := bufio.NewReader(os.Stdin)
 
-		//send confirm message to user
-		fmt.Printf("Are you sure you want to quit the program? (y/n) \n")
-
-		data, _ := reader.ReadString('\n')
-
-		userInput := strings.Trim(data, "\n\r")
+		//get userinput value
+		userInput := readUserInput("Are you sure you want to quit the program? (y/n) \n")
 
 		if userInput == "y" {
 			//Exit cli
@@ -229,6 +188,18 @@ func processOption() {
 		}
 
 	default:
-		fmt.Printf("You have choose the wrong option.\n\n")
+		fmt.Printf("You have choosen the wrong option. Try again!! \n\n")
 	}
+}
+
+func readUserInput(message string) string {
+	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Print(message)
+
+	data, _ := reader.ReadString('\n')
+
+	userInput := strings.Trim(data, "\n\r")
+
+	return userInput
 }

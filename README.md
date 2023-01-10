@@ -13,12 +13,12 @@ go run .
 ```
 
 ### Available commands
-add: Adds a new todo item
-edit: Edits an existing todo item
-delete: Deletes a todo item
-complete: Marks a todo item as complete
-list: View all todo items
-quit: Exit the program
+* add: Adds a new todo item
+* edit: Edits an existing todo item
+* delete: Deletes a todo item
+* complete: Marks a todo item as complete
+* list: View all todo items
+* quit: Exit the program
 
 
 

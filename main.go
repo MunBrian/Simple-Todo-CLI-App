@@ -98,18 +98,18 @@ func processOption() {
 
 		//edit task
 	case "3":
-		var taskID string
+		var taskId string
 		reader := bufio.NewReader(os.Stdin)
 		//Ask user to enter his/her option
 		fmt.Printf("Enter Task ID: \n")
 		data, _ := reader.ReadString('\n')
 
-		taskID = strings.Trim(data, "\n, \r")
+		taskId = strings.Trim(data, "\n, \r")
 
 		//loop throug each todo
 		for index, todo := range todos {
 			//convert todo.id(int) to string
-			if strconv.Itoa(todo.id) == taskID {
+			if strconv.Itoa(todo.id) == taskId {
 				fmt.Printf("%v \n", todo.task)
 
 				var newTask string
@@ -127,6 +127,8 @@ func processOption() {
 				//display message to user
 				fmt.Println("You successfully updated the task.")
 
+			} else {
+				fmt.Printf("No task with Id of %v. Try Again \n\n", taskId)
 			}
 		}
 
@@ -134,7 +136,7 @@ func processOption() {
 		var taskId string
 		reader := bufio.NewReader(os.Stdin)
 		//Ask user to enter his/her option
-		fmt.Printf("Enter Taskid to mark as complete: \n")
+		fmt.Printf("Enter Taskid: \n")
 		data, _ := reader.ReadString('\n')
 
 		taskId = strings.Trim(data, "\n, \r")
@@ -154,6 +156,7 @@ func processOption() {
 
 				if answer == "y" {
 					//use sprintF to save formated output to completed Task
+					//strikethrough task to make as completed
 					completedTask := fmt.Sprintf("\033[9m%s\033[0m", todo.task)
 					//use index from slice to edit task in struct
 					todos[index].task = completedTask
@@ -163,6 +166,50 @@ func processOption() {
 					continue
 				}
 
+			} else {
+				fmt.Printf("No task with Id of %v. Try Again \n\n", taskId)
+			}
+		}
+
+		//remove a todo
+	case "5":
+
+		var taskId string
+
+		//ask user the task id he/she wants to remove
+		reader := bufio.NewReader(os.Stdin)
+
+		fmt.Printf("Enter Taskid: \n")
+
+		data, _ := reader.ReadString('\n')
+
+		taskId = strings.Trim(data, "\n, \r")
+
+		for index, todo := range todos {
+			if strconv.Itoa(todo.id) == taskId {
+				//send a confirm message to remove todo task
+
+				reader := bufio.NewReader(os.Stdin)
+
+				fmt.Printf("Are you sure you want to delete %v from todos task (y/n) \n", todo.task)
+
+				data, _ := reader.ReadString('\n')
+
+				userInput := strings.Trim(data, "\n\r")
+
+				if userInput == "y" {
+					//using index remove task with same id as that entered by user
+					//creates a new todos slice
+					todos = append(todos[:index], todos[index+1:]...)
+
+					//send message to user
+					fmt.Printf("You successfully removed task. \n\n")
+				} else {
+					continue
+				}
+
+			} else {
+				fmt.Printf("No task with Id of %v. Try Again \n\n", taskId)
 			}
 		}
 

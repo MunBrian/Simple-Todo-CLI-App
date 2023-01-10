@@ -212,6 +212,21 @@ func processOption() {
 				fmt.Printf("No task with Id of %v. Try Again \n\n", taskId)
 			}
 		}
+		//quit the program
+	case "6":
+		reader := bufio.NewReader(os.Stdin)
+
+		//send confirm message to user
+		fmt.Printf("Are you sure you want to quit the program? (y/n) \n")
+
+		data, _ := reader.ReadString('\n')
+
+		userInput := strings.Trim(data, "\n\r")
+
+		if userInput == "y" {
+			//Exit cli
+			os.Exit(0)
+		}
 
 	default:
 		fmt.Printf("You have choose the wrong option.\n\n")

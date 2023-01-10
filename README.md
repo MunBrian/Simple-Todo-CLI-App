@@ -6,8 +6,8 @@ A simple command-line application for managing a list of todo items written in G
 -Install [Go](https://go.dev/) on your local machine
 
 ## Usage
-Navigate to the cloned repo on your local machine
-Enter the command below
+* Navigate to the cloned repo on your local machine
+* Enter the command below
 ```bash 
 go run .
 ```

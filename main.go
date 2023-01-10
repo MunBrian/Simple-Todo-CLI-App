@@ -52,7 +52,7 @@ func getOption() {
 
 	reader := bufio.NewReader(os.Stdin)
 	//Ask user to enter his/her option
-	fmt.Println("Enter a an option: ")
+	fmt.Printf("Enter a an option: \n")
 	option, _ := reader.ReadString('\n')
 
 	//remove delimiter from string
@@ -126,6 +126,42 @@ func processOption() {
 
 				//display message to user
 				fmt.Println("You successfully updated the task.")
+
+			}
+		}
+
+	case "4":
+		var taskId string
+		reader := bufio.NewReader(os.Stdin)
+		//Ask user to enter his/her option
+		fmt.Printf("Enter Taskid to mark as complete: \n")
+		data, _ := reader.ReadString('\n')
+
+		taskId = strings.Trim(data, "\n, \r")
+
+		for index, todo := range todos {
+			//convert todo.id(int) to string
+			if strconv.Itoa(todo.id) == taskId {
+
+				reader := bufio.NewReader(os.Stdin)
+
+				//Ask user to confirm to mark task as completed
+				fmt.Printf("Do you want to mark %v as completed? (y/n)\n", todo.task)
+
+				data, _ := reader.ReadString('\n')
+
+				answer := strings.Trim(data, "\n, \r")
+
+				if answer == "y" {
+					//use sprintF to save formated output to completed Task
+					completedTask := fmt.Sprintf("\033[9m%s\033[0m", todo.task)
+					//use index from slice to edit task in struct
+					todos[index].task = completedTask
+
+					fmt.Printf("Successfully marked task as completed \n\n")
+				} else {
+					continue
+				}
 
 			}
 		}

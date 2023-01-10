@@ -3,7 +3,7 @@ A simple command-line application for managing a list of todo items written in G
 
 ## Installation
 -Clone repo to your local machine.
--Install [Go](https://go.dev/) in your machine
+-Install [Go](https://go.dev/) on your local machine
 
 ## Usage
 Navigate to the cloned repo on your local machine

@@ -7,7 +7,7 @@ A simple command-line application for managing a list of todo items written in G
 
 ## Usage
 * Navigate to the cloned repo on your local machine
-* Enter the command below
+* Type the command below on your CLI
 ```bash 
 go run .
 ```

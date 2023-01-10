@@ -35,12 +35,12 @@ func main() {
 		fmt.Println("###################################")
 
 		//display option to choose from
-		fmt.Printf("1: Add a new Todo\n")
-		fmt.Printf("2: View all Todos \n")
-		fmt.Printf("3: Edit a Todo \n")
-		fmt.Printf("4: Mark a todo as complete \n")
-		fmt.Printf("5: Remove a todo \n")
-		fmt.Printf("6: Quit the program \n")
+		fmt.Printf("add: Add a new Todo\n")
+		fmt.Printf("list: View all Todos \n")
+		fmt.Printf("edit: Edit a Todo \n")
+		fmt.Printf("complete: Mark a todo as complete \n")
+		fmt.Printf("delete: Delete a todo item\n")
+		fmt.Printf("quit: Exit program \n")
 
 		fmt.Println("###################################")
 
@@ -64,7 +64,7 @@ func getOption() {
 func processOption() {
 	switch userOption {
 	//add task
-	case "1":
+	case "add":
 
 		//get userinput and assign to task
 		task := readUserInput("Enter Task: \n")
@@ -84,7 +84,7 @@ func processOption() {
 		fmt.Printf("Your Task  has successfully been added to list.\n \n")
 
 		//view all todos
-	case "2":
+	case "list":
 
 		if len(todos) == 0 {
 			fmt.Printf("No available tasks. Please select option 1 to add. \n \n")
@@ -97,7 +97,7 @@ func processOption() {
 		}
 
 		//edit task
-	case "3":
+	case "edit":
 		var taskId string
 
 		taskId = readUserInput("Enter Task ID: \n")
@@ -121,7 +121,7 @@ func processOption() {
 		}
 
 		//make task as complete
-	case "4":
+	case "complete":
 
 		//get value of userInput and assign to taskId
 		taskId := readUserInput("Enter Taskid: \n")
@@ -143,7 +143,7 @@ func processOption() {
 					//use index from slice to edit task in struct
 					todos[index].task = completedTask
 
-					fmt.Printf("Successfully marked task as completed \n\n")
+					fmt.Printf("Successfully marked task as completed. \n")
 				}
 
 			}
@@ -151,7 +151,7 @@ func processOption() {
 		}
 
 		//remove a todo
-	case "5":
+	case "delete":
 
 		taskId := readUserInput("Enter Taskid: \n")
 
@@ -177,7 +177,7 @@ func processOption() {
 		}
 
 		//quit the program
-	case "6":
+	case "quit":
 
 		//get userinput value
 		userInput := readUserInput("Are you sure you want to quit the program? (y/n) \n")
